@@ -31,5 +31,6 @@ RUN \
 
 ENV AWS_PROFILE=kubeflow
 
+WORKDIR /kubeflow-manifests/deployments/cognito-rds-s3/terraform
 
 ENTRYPOINT [ "/bin/bash"]
