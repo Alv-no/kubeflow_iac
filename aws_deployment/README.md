@@ -50,3 +50,35 @@ aws_access_key_id = <Your Access Key ID>
 aws_secret_access_key = <Your Secret Access Key>
 ```
 
+### Route 53 
+In order to be able to access your kubeflow deployment, you will need a domain. The simplest solution is to use AWS Route 53 to set this up. In this way, you don't need to worry about subdomains, for example. The ".link" is the cheapest option available on AWS and you can register a ".link" domain for about 5 usd. To see instructions on how to registrer your domain with Route 53, check this [link](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html). 
+
+We will use the name of the domain you registered in a leter step. 
+
+### IAM user for the Minio client
+We will need to set up an IAM user for the Minio client. In order to do this, follow [this instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_cliwpsapi). We need to grant this user permissions to get bucket locations and allow read and write access to objects in an S3 bucket where you want to store the Kubeflow artifacts. 
+Store the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY for the IAM user that was just created. We will use it in a later step. 
+
+## Route 53, IAM Minio client, and enviroment variables
+
+Next, we will write a configuration with the information for our domain, IAM minio client, and some additional environment variables necessary for our deployment. 
+
+The should look like this: 
+```
+cluster_name="kubeflow_cluster"
+cluster_region="us-east-1"
+generate_db_password="true"
+aws_route53_root_zone_name="<the domain you have registered with Route 53>"
+aws_route53_subdomain_zone_name="platform.<your Route 53 domain>"
+cognito_user_pool_name="kubeflow_cognito_pool"
+use_rds="true"
+use_s3="true"
+use_cognito="true"
+load_balancer_scheme="internet-facing"
+
+# The below values are set to make cleanup easier but are not recommended for p>
+deletion_protection="false"
+secret_recovery_window_in_days="0"
+force_destroy_s3_bucket="true"
+```
+
