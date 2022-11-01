@@ -82,3 +82,52 @@ secret_recovery_window_in_days="0"
 force_destroy_s3_bucket="true"
 ```
 
+**Save this file as `sample.auto.tfvars` in the path:**
+
+```
+/kubeflow-manifests/deployments/cognito-rds-s3/terraform
+``` 
+
+**inside the docker container**.
+
+
+
+### Export IAM Minio credentials
+We will need to run a shell script to export the Minio IAM credentials. The file should look like this: 
+```
+export TF_VAR_minio_aws_access_key_id=<Your Minio AWS access key id>
+export TF_VAR_minio_aws_secret_access_key=<Your Minio AWS secret key>
+```
+
+**Before you continue to the next step, execute this exports**.
+
+## Preview of the Terraform configuration
+If you want to see a preview of the configuration we are about to apply, run:
+```
+terraform output -raw kubeflow_platform_domain
+```
+
+## Deploy with Terraform
+Lay back and relax, running the command to deploy Kubeflow will take a long time. To deploy, run this command:
+
+```
+make deploy
+```
+
+## Connecting to the Kubeflow dashboard
+To connect to the main Kubeflow dashboard, you will have to head to the Cognito user pool created by the deployment. Create a new user. **THIS USER MUST HAVE E-MAIL ``user@example.com``. This is so that you can access the right namespace in the deployment. 
+
+To get the link to the main Kubeflow dashboard, run: 
+``` 
+terraform output -raw kubeflow_platform_domain
+``` 
+
+Finally, open the link your browser and connect using the credentials that you just configured. 
+
+# Cleanup
+To destroy or the deployed resources on AWS, run:
+
+```
+make delete
+```
+
