@@ -11,8 +11,42 @@ Here, we focus on the Kubeflow deployment version with the tightest integration 
 This deployment is done relaying on **Terraform**. 
 
 ## Deployment prerequisites
-To deploy Kubeflow in AWS three prerequisites must be fulfilled:
+To deploy Kubeflow in AWS there are some prerequisites which are covered when building the docker container.
 
-1. Setting up a docker environment
-2. 
-3. 
+### Setting up a docker environment
+User the Dockerfile in the repository to build the image with the command: 
+
+```
+docker build --rm -t ubuntu/kubeflow_deploy:18.04 . 
+```
+
+
+## Configuration files
+Before running with docker, we need to set up a couple of AWS configuration files. 
+### AWS config and AWS credentials
+To be able to interact with AWS via CLI, we need to set up the AWS region and AWS credentials for our existing AWS account. An option to do this is to run:
+
+```
+aws configure
+``` 
+
+and provide the information as indicated in the CLI prompt. If you have previously done this in your local machine, this information is saved by default under:
+```
+~/.aws/config
+~/.aws/credentials
+```
+
+If you haven't run this command you can write this files yourself. They config file must look like this: 
+
+```
+[profile kubeflow]
+region = us-east-1
+```
+
+The credentials file should look something like this:
+```
+[kubeflow]
+aws_access_key_id = <Your Access Key ID>
+aws_secret_access_key = <Your Secret Access Key>
+```
+
