@@ -18,7 +18,8 @@ RUN git clone https://github.com/awslabs/kubeflow-manifests.git
 WORKDIR /kubeflow-manifests
 RUN git checkout ${AWS_RELEASE_VERSION}
 RUN git clone --branch ${KUBEFLOW_RELEASE_VERSION} https://github.com/kubeflow/manifests.git upstream
-
+RUN find ./ -type f -exec sed -i -e 's/user@example.com/arturo@alv.no/g' {} \;
+RUN apt-get update
 RUN make install-tools
 
 
